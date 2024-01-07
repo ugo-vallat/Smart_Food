@@ -22,6 +22,10 @@ public class Logger {
 		System.err.println(MyColors.success() + " Success : < " + str + " >"+MyColors.end());
 	}
 	
+	public static void log(String str) {
+		System.err.println(MyColors.yellow() + " Log : < " + str + " >"+MyColors.end());
+	}
+	
 	
 
 }

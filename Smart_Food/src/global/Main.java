@@ -1,37 +1,45 @@
 package global;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import boundary.BoundaryDisplayStock;
-import boundary.BoundaryStockGestionnary;
+import boundary.BoundaryHistoryManager;
+import boundary.BoundaryStockManager;
 import controller.ControllerDisplayStock;
-import controller.ControllerStockGestionnary;
-import kernel.stock.StockGestionnary;
+import controller.ControllerHistoryManager;
+import controller.ControllerStockManager;
+import kernel.stock.HistoryManager;
+import kernel.stock.StockManager;
 import myUtils.Logger;
 import myUtils.MyColors;
 import myUtils.Ressources;
 
 
 public class Main {
-	private BoundaryStockGestionnary boundaryStockGestionnary;
-	private ControllerStockGestionnary controllerStockGestionnary;
+	private StockManager stockManager;
+	private HistoryManager historyManager;
+	private ControllerStockManager controllerStockManager;
 	private ControllerDisplayStock controllerDisplayStock;
-	private StockGestionnary stockGestionnary;
+	private ControllerHistoryManager controllerHistorical;
+	private BoundaryStockManager boundaryStockManager;
 	private BoundaryDisplayStock boundaryDisplayStock;
+	private BoundaryHistoryManager boundaryHistorical;
 	
 
 	public Main() {
-		stockGestionnary = new StockGestionnary();
-		if(!stockGestionnary.importFromCSV(Ressources.getPathIn())) {
+		stockManager = new StockManager();
+		if(!stockManager.importFromCSV(Ressources.getPathIn())) {
 			Logger.error("Echec du chargement des données à "+Ressources.getPathIn());
+			Logger.warning("Current dir : " + System.getProperty("user.dir"));
 		}
-		System.out.println(stockGestionnary.toString());
-		controllerStockGestionnary = new ControllerStockGestionnary(stockGestionnary);
-		controllerDisplayStock = new ControllerDisplayStock(stockGestionnary);
-		boundaryDisplayStock = new BoundaryDisplayStock(controllerStockGestionnary, controllerDisplayStock);
-		boundaryStockGestionnary = new BoundaryStockGestionnary(controllerStockGestionnary, boundaryDisplayStock);
+		historyManager = new HistoryManager();
+		controllerStockManager = new ControllerStockManager(stockManager);
+		controllerDisplayStock = new ControllerDisplayStock(stockManager);
+		controllerHistorical = new ControllerHistoryManager(historyManager);
+		boundaryDisplayStock = new BoundaryDisplayStock(controllerStockManager, controllerDisplayStock);
+		boundaryStockManager = new BoundaryStockManager(controllerStockManager, boundaryDisplayStock);
+		boundaryHistorical = new BoundaryHistoryManager(controllerHistorical);
 	}
 	
 	public void launch() {
@@ -39,13 +47,10 @@ public class Main {
 		while(!exit) {
 			switch (menu()) {
 		        case 1:
-		            boundaryStockGestionnary.call();
+		            boundaryStockManager.call();
 		            break;
 		        case 2:
-		            System.out.println(" ### ZONE EN TRAVAUX ### ");
-		            break;
-		        case 3:
-		        	System.out.println(" ### ZONE EN TRAVAUX ### ");
+		        	boundaryHistorical.call();
 		            break;
 		        case 0:
 		            exit = true;
@@ -55,7 +60,7 @@ public class Main {
 			}
 		}
 		
-		stockGestionnary.exportToCSV(Ressources.getPathOut());
+		stockManager.exportToCSV(Ressources.getPathOut());
 		
 	}
 	
@@ -72,8 +77,7 @@ public class Main {
 		
 		StringBuilder str  = new StringBuilder();
 		str.append("\t 1 - Gestion des stocks\n");
-		str.append("\t 2 - Recettes\n");
-		str.append("\t 3 - Historique\n");
+		str.append("\t 2 - Historique\n");
 		str.append("\n\t 0 - Fermer\n");
 		System.out.println(str.toString());
 		

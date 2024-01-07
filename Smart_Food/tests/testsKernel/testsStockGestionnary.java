@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 import kernel.stock.ExpirationDate;
 import kernel.stock.Product;
 import kernel.stock.Product.Unit;
-import kernel.stock.StockGestionnary;
+import kernel.stock.StockManager;
 import kernel.stock.Ration;
 
 
 
 class testsStockGestionnary {
-	StockGestionnary stock;
+	StockManager stock;
 	Product product1;
 	Product product1bis;
 	Product product2;
@@ -31,7 +31,7 @@ class testsStockGestionnary {
 	
 	@BeforeEach
 	void init() {
-		stock = new StockGestionnary();
+		stock = new StockManager();
 		product1 =  new Product("produit1", Unit.G);
 		product1bis =  new Product("produit1", Unit.KG);
 		product2 =  new Product("produit2", Unit.G);

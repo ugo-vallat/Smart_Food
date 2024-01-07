@@ -16,9 +16,9 @@ import java.util.TreeMap;
 
 import kernel.stock.Product.Unit;
 import myUtils.Logger;
+import myUtils.Ressources;
 
-public class StockGestionnary implements Iterable<Product>{
-	Set<Product> productStock;
+public class StockManager implements Iterable<Product>{
 	Map<Product, TreeMap<ExpirationDate, Float>> stock = new HashMap<>();
 	
 	
@@ -40,6 +40,15 @@ public class StockGestionnary implements Iterable<Product>{
 		return inStock;
 	}
 	
+	public Unit getUnitOfProduct(Product product) {
+		Set<Product> set = stock.keySet();
+		for(Product p : set) {
+			if (p.equals(product))
+				return p.getUnit();
+		}
+		return Unit.NONE;
+	}
+	
 	public List<Ration> getRationsOfProduct(Product product) {
 		List<Ration> l = new ArrayList<>();
 		for(ExpirationDate date : stock.get(product).keySet()) {
@@ -55,6 +64,9 @@ public class StockGestionnary implements Iterable<Product>{
 	}
 	
 	public boolean deleteProduct(Product product) {
+		if(getStockOfProduct(product) > 0) {
+			HistoryManager.addToHistorical(Ressources.getPathHistory(), new Product(product.getName(), getUnitOfProduct(product)), LocalDate.now(), getStockOfProduct(product));
+		}
 		return stock.remove(product) != null;
 	}
 	
@@ -96,6 +108,7 @@ public class StockGestionnary implements Iterable<Product>{
 			removed = inStock;
 			stock.get(product).remove(expiration);
 		}
+		HistoryManager.addToHistorical(Ressources.getPathHistory(), new Product(product.getName(), getUnitOfProduct(product)), LocalDate.now(), removed);
 		return removed;
 	}
 	
@@ -127,20 +140,19 @@ public class StockGestionnary implements Iterable<Product>{
 			Logger.warning("date introuvable");
 			return 0f;
 		}
+		HistoryManager.addToHistorical(Ressources.getPathHistory(), new Product(product.getName(), getUnitOfProduct(product)), LocalDate.now(), removed);
 		return removed;
 	}
 	
 	public Float emptyStockOfProduct(Product product) {
-		Map<ExpirationDate, Float> inStock = stock.get(product);
-		Float removed = 0f;
-		for(Float q : inStock.values())
-			removed += q;
-		stock.replace(product, new TreeMap<>());
+		Float removed = removeRation(product, getStockOfProduct(product));
 		return removed;
 	}
 	
 	public void emptyStock() {
-		stock = new HashMap<>();
+		for(Product p : stock.keySet()) {
+			emptyStockOfProduct(p);
+		}
 	}
 	
 	@Override
@@ -233,41 +245,7 @@ public class StockGestionnary implements Iterable<Product>{
 	}
 	
 
-	
-	
-	public static void main(String[] args) {
-		StockGestionnary stock = new StockGestionnary();
-//		Product tomate = new Product("tomate", Unit.KG);
-//		Product lait = new Product("Lait", Unit.L);
-//		Product fromage = new Product("Formage", Unit.KG);
-//		
-//		stock.addProduct(tomate);
-//		stock.addProduct(lait);
-//		
-//		stock.addRation(tomate,2f, new ExpirationDate(LocalDate.now().plusDays(1)));
-//		stock.addRation(tomate, 12f, new ExpirationDate(LocalDate.now()));
-//		stock.addRation(tomate, 2f, new ExpirationDate(LocalDate.now()));
-//		
-//		stock.addRation(lait, 3f, new ExpirationDate(LocalDate.now()));
-//		stock.addRation(fromage, 5f, new ExpirationDate(LocalDate.now()));
-//	
-//		System.out.println(stock);
-//		
-//		stock.exportToCSV("\\Users\\ugova\\eclipse-workspace\\SmartFood\\data\\fichier.csv");
-////		
-		stock.importFromCSV("\\Users\\ugova\\eclipse-workspace\\SmartFood\\data\\fichier.csv");
-		
-		System.out.println(stock);
-//		
-//		CommandeShell cmd = new CommandeShell();
-//		cmd.executerOcaml();
-//		
-//		System.out.println("Execution ocaml terminée");
-//		
-		
-	}
-	
-	
+
 	
 	
 

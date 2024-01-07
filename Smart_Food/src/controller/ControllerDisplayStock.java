@@ -9,12 +9,12 @@ import java.util.Set;
 import kernel.stock.Product;
 import kernel.stock.Product.Unit;
 import kernel.stock.Ration;
-import kernel.stock.StockGestionnary;
+import kernel.stock.StockManager;
 
 public class ControllerDisplayStock {
-	private StockGestionnary stock;
+	private StockManager stock;
 	
-	public ControllerDisplayStock(StockGestionnary stock) {
+	public ControllerDisplayStock(StockManager stock) {
 		this.stock = stock;
 	}
 	

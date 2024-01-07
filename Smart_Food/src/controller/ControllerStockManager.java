@@ -7,13 +7,13 @@ import java.util.Set;
 import kernel.stock.ExpirationDate;
 import kernel.stock.Product;
 import kernel.stock.Ration;
-import kernel.stock.StockGestionnary;
+import kernel.stock.StockManager;
 import myUtils.Logger;
 
-public class ControllerStockGestionnary {
-	private StockGestionnary stock;
+public class ControllerStockManager {
+	private StockManager stock;
 	
-	public ControllerStockGestionnary(StockGestionnary stock) {
+	public ControllerStockManager(StockManager stock) {
 		this.stock = stock;
 	}
 	

@@ -8,21 +8,21 @@ import java.util.Set;
 import controller.ControllerDisplayStock;
 import controller.ControllerDisplayStock.OrderProduct;
 import controller.ControllerDisplayStock.OrderRation;
-import controller.ControllerStockGestionnary;
+import controller.ControllerStockManager;
 import controller.RationSheet;
 import kernel.stock.Product;
 import kernel.stock.Ration;
-import kernel.stock.StockGestionnary;
+import kernel.stock.StockManager;
 import myUtils.Logger;
 import myUtils.MyColors;
 import myUtils.Ressources;
 
 public class BoundaryDisplayStock implements IBoundary{
-	ControllerStockGestionnary controllerStock;
+	ControllerStockManager controllerStock;
 	ControllerDisplayStock controllerDisplay;
 	
 	
-	public BoundaryDisplayStock(ControllerStockGestionnary controllerStock, ControllerDisplayStock controllerDisplay) {
+	public BoundaryDisplayStock(ControllerStockManager controllerStock, ControllerDisplayStock controllerDisplay) {
 		this.controllerStock = controllerStock;
 		this.controllerDisplay = controllerDisplay;
 	}
@@ -244,10 +244,10 @@ public class BoundaryDisplayStock implements IBoundary{
 	
 	
 	public static void main(String[] args) {
-		StockGestionnary stock = new StockGestionnary();
+		StockManager stock = new StockManager();
 		stock.importFromCSV(Ressources.getPathIn());
 		ControllerDisplayStock controllerDisplayStock = new ControllerDisplayStock(stock);
-		ControllerStockGestionnary controllerStockGestionnary = new ControllerStockGestionnary(stock);
+		ControllerStockManager controllerStockGestionnary = new ControllerStockManager(stock);
 		BoundaryDisplayStock boundaryDisplayStock = new BoundaryDisplayStock(controllerStockGestionnary, controllerDisplayStock);
 		
 		boundaryDisplayStock.call();

@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/boundary/BoundaryDisplayStock.java=UTF-8
-encoding//src/boundary/BoundaryStockGestionnary.java=UTF-8
+encoding//src/boundary/BoundaryHistoryManager.java=UTF-8
+encoding//src/boundary/BoundaryStockManager.java=UTF-8
 encoding//src/global/Main.java=UTF-8
 encoding/<project>=windows-1252

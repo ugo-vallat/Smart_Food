@@ -1,7 +1,8 @@
 package myUtils;
 
 public class Ressources {
-	private static String pathIn = "\\Users\\ugova\\eclipse-workspace\\SmartFood\\data\\fichier.csv";
+	private static String pathIn = ".\\data\\fichier.csv";
+	private static String pathHistorical = ".\\data\\history.csv";
 	
 	private Ressources() {
 		super();
@@ -13,6 +14,10 @@ public class Ressources {
 	
 	public static String getPathOut() {
 		return pathIn;
+	}
+	
+	public static String getPathHistory() {
+		return pathHistorical;
 	}
 
 }

@@ -8,44 +8,36 @@ import java.io.InputStreamReader;
 public class CommandeShell {
 
 	private static CommandeShell instance = new CommandeShell();
-	private static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+public static boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
-	public void executerOcaml() {
+	public void executerOcaml(String args) {
 
 		if (isWindows) {
-			executerOcamlWindow();
+			executerOcamlWindow(args);
 		} else {
-			executerOcamlLinux();
+			executerOcamlLinux(args);
 		}
 	}
  
-	private void executerOcamlWindow() {
-		ProcessBuilder builder = new ProcessBuilder("CMD", "/C", "Bash ExecuterOcaml.sh");
+	private void executerOcamlWindow(String args) {
+		ProcessBuilder builder = new ProcessBuilder("CMD", "/C", "Bash ExecuterOcaml.sh "+ args);
 		String chemin = "data/fichier_out.csv";
 		File plans = new File(chemin);
-		if (true) {
-			try {
-				Process process = builder.start();
-				System.out.println((read(process)));
+		try {
+			Process process = builder.start();
+			System.out.println((read(process)));
 
-				if (!(new File(chemin).exists())) {
-					System.out.println(" Les nouvelles données n'ont pas pu être créées.");
-					/* C'est peut-être parsque la commande 'make && ./main.exe' est introuvable*/
-				}
-			} catch (Exception e) {
-				String erreur = "Erreur survenue lors de l'execution des fichiers Ocaml : " + e + "\n"
-						+ "Une solution possible est de donner les droits d'éxécution au fichier ExecuterOcaml.sh avec 'chmod u+v ExecuterOcaml.sh'.";
-				System.out.println((erreur));
-			}
-		} else {
-			System.out.println("Les fichiers de donnés n'existent pas.\n");
+		} catch (Exception e) {
+			String erreur = "Erreur survenue lors de l'execution des fichiers Ocaml : " + e + "\n"
+					+ "Une solution possible est de donner les droits d'ex�cution au fichier ExecuterOcaml.sh avec 'chmod u+v ExecuterOcaml.sh'.";
+			System.out.println((erreur));
 		}
 	}
 	
-	private void executerOcamlLinux() {
+	private void executerOcamlLinux(String args) {
 		ProcessBuilder builder = new ProcessBuilder();
 		String chemin = "data/fichier_out.csv";
-		builder.command(new File("./") + "/ExecuterOcaml.sh");
+		builder.command(new File("./") + "/ExecuterOcaml.sh" + args);
 		File plans = new File(chemin);
 
 		if (plans.exists()) {
@@ -53,9 +45,6 @@ public class CommandeShell {
 				Process process = builder.start();
 				System.out.println((read(process)));
 
-				if (!(new File(chemin).exists())) {
-					System.out.println(" Les nouvelles données n'ont pas pu être créées. C'est peut-être parsque la commande 'make && ./main.exe' est introuvable");
-				}
 			} catch (Exception e) {
 				String erreur = "Erreur survenue lors de l'execution des fichiers Ocaml : " + e + "\n"
 						+ "Une solution possible est de donner les droits d'éxécution au fichier ExecuterOcaml.sh avec 'chmod u+v ExecuterOcaml.sh'.";

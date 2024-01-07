@@ -7,22 +7,22 @@ import java.util.Scanner;
 
 import controller.ControllerDisplayStock;
 import controller.ControllerDisplayStock.OrderProduct;
-import controller.ControllerStockGestionnary;
+import controller.ControllerStockManager;
 import controller.ProductSheet;
 import kernel.stock.ExpirationDate;
 import kernel.stock.Product;
 import kernel.stock.Product.Unit;
 import kernel.stock.Ration;
-import kernel.stock.StockGestionnary;
+import kernel.stock.StockManager;
 import myUtils.Logger;
 import myUtils.MyColors;
 import myUtils.Ressources;
 
-public class BoundaryStockGestionnary implements IBoundary{
-	private ControllerStockGestionnary controller;
+public class BoundaryStockManager implements IBoundary{
+	private ControllerStockManager controller;
 	private BoundaryDisplayStock boundaryDisplay;
 	
-	public BoundaryStockGestionnary(ControllerStockGestionnary controller, BoundaryDisplayStock boundaryDisplay) {
+	public BoundaryStockManager(ControllerStockManager controller, BoundaryDisplayStock boundaryDisplay) {
 		this.controller = controller;
 		this.boundaryDisplay = boundaryDisplay;
 	}
@@ -544,11 +544,11 @@ String name;
 
 	
 	public static void main(String[] args) {
-		StockGestionnary stockGestionnary = new StockGestionnary();
-		ControllerStockGestionnary controllerStockGestionnary = new ControllerStockGestionnary(stockGestionnary);
+		StockManager stockGestionnary = new StockManager();
+		ControllerStockManager controllerStockGestionnary = new ControllerStockManager(stockGestionnary);
 		ControllerDisplayStock controllerDisplayStock = new ControllerDisplayStock(stockGestionnary);
 		BoundaryDisplayStock displayBoundary = new BoundaryDisplayStock(controllerStockGestionnary,controllerDisplayStock);
-		BoundaryStockGestionnary boundary = new BoundaryStockGestionnary(controllerStockGestionnary, displayBoundary);
+		BoundaryStockManager boundary = new BoundaryStockManager(controllerStockGestionnary, displayBoundary);
 		String path = "\\Users\\ugova\\eclipse-workspace\\SmartFood\\data\\fichier.csv";
 		if(!stockGestionnary.importFromCSV(path)) {
 			Logger.error("echec lecture CSV à " + path);

@@ -1,13 +1,13 @@
 package myUtils;
 
 public class MyColors {
-	private static String END = "\33[0m";
+public static String END = "\33[0m";
 	private static String ERROR = "\033[38;5;196m";
-	private static String WARN = "\033[38;5;226m";
+public static String WARN = "\033[38;5;226m";
 	private static String ORANGE = "\033[38;5;214m";
 	private static String LIGHT_ORANGE = "\033[38;5;222m";
 	private static String BLUE = "\033[38;5;159m";
-	private static String GREEN = "\033[38;5;46m";
+public static String GREEN = "\033[38;5;46m";
 	
 	public MyColors() {
 		super();
